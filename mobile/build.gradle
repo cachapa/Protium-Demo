@@ -1,0 +1,32 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+    
+    defaultConfig {
+        applicationId "com.codingbuffalo.protiumdemo"
+        minSdkVersion 14
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    
+    dataBinding {
+        enabled = true
+    }
+}
+
+dependencies {
+    compile project(path: ':data')
+    
+    // Load preview images in the grid view
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    // Load gifs - Picasso does not support animated gifs and ion wasn't working properly with the grid view
+    compile 'com.koushikdutta.ion:ion:2.1.7'
+    // Android support libs
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:recyclerview-v7:23.1.1'
+    
+    testCompile 'junit:junit:4.12'
+}

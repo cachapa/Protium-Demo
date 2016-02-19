@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:auto="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    
+    <data>
+        
+        <import type="android.view.View"/>
+        
+        <import type="com.codingbuffalo.data.GifList"/>
+        
+        <import type="com.codingbuffalo.data.protium.StateHolder"/>
+        
+        <variable
+            name="gifs"
+            type="GifList"/>
+        
+        <variable
+            name="stateHolder"
+            type="StateHolder"/>
+    </data>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.codingbuffalo.protiumdemo.MainActivity">
+        
+        <com.codingbuffalo.protiumdemo.widget.GridRecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            auto:gif_list="@{gifs.list}"/>
+        
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/colorPrimary"
+            android:elevation="8dp"
+            android:paddingBottom="4dp"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp"
+            android:paddingTop="4dp">
+            
+            <com.codingbuffalo.protiumdemo.widget.CounterView
+                android:id="@+id/counter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                auto:count="@{gifs.list.size()}"
+                auto:totalCount="@{gifs.totalCount}"/>
+            
+            <ProgressBar
+                android:id="@+id/progress"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:visibility="@{stateHolder.stateObservable == StateHolder.State.WORKING ? View.VISIBLE : View.GONE}"/>
+        
+        </FrameLayout>
+    
+    </LinearLayout>
+
+</layout>
