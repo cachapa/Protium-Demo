@@ -1,4 +1,4 @@
-package com.codingbuffalo.data;
+package com.codingbuffalo.data.model;
 
 public class Gif {
     private static final String GIF_URL = "http://media2.giphy.com/media/%s/giphy.gif";

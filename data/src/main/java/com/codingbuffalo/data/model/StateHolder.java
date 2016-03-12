@@ -1,4 +1,4 @@
-package com.codingbuffalo.data.protium;
+package com.codingbuffalo.data.model;
 
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;

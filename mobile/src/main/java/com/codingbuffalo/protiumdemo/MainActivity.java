@@ -3,8 +3,8 @@ package com.codingbuffalo.protiumdemo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.codingbuffalo.data.Gif;
-import com.codingbuffalo.data.SearchInteractor;
+import com.codingbuffalo.data.model.Gif;
+import com.codingbuffalo.data.interactor.SearchInteractor;
 import com.codingbuffalo.protiumdemo.fragment.GridFragment;
 import com.codingbuffalo.protiumdemo.fragment.ImageFragment;
 

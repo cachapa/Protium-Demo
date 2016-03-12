@@ -1,6 +1,7 @@
-package com.codingbuffalo.data;
+package com.codingbuffalo.data.repository;
 
-import com.codingbuffalo.data.protium.Repository;
+import com.codingbuffalo.data.model.Gif;
+import com.codingbuffalo.data.model.Page;
 
 import java.io.IOException;
 
@@ -10,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public class GiphyRepository implements Repository {
+public class GiphyRepository {
     private final Service mService;
     
     public GiphyRepository() {

@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.codingbuffalo.data.Gif;
+import com.codingbuffalo.data.model.Gif;
 import com.codingbuffalo.protiumdemo.MainActivity;
 import com.codingbuffalo.protiumdemo.R;
 import com.codingbuffalo.protiumdemo.databinding.ItemGifBinding;

@@ -1,4 +1,4 @@
-package com.codingbuffalo.data;
+package com.codingbuffalo.data.model;
 
 import com.google.gson.annotations.SerializedName;
 

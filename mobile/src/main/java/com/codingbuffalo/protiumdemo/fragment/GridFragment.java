@@ -10,9 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.codingbuffalo.data.GifList;
-import com.codingbuffalo.data.SearchInteractor;
-import com.codingbuffalo.data.protium.StateHolder;
+import com.codingbuffalo.data.model.GifList;
+import com.codingbuffalo.data.interactor.SearchInteractor;
 import com.codingbuffalo.protiumdemo.MainActivity;
 import com.codingbuffalo.protiumdemo.R;
 import com.codingbuffalo.protiumdemo.databinding.FragmentGridBinding;
@@ -27,11 +26,11 @@ public class GridFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mSearchInteractor = InteractorRegistry.getSearchInteractor("beer");
         GifList     gifs        = mSearchInteractor.getGifs();
-        StateHolder stateHolder = mSearchInteractor.getStateHolder();
+//        StateHolder stateHolder = mSearchInteractor.getStateHolder();
         
         FragmentGridBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_grid, container, false);
         binding.setGifs(gifs);
-        binding.setStateHolder(stateHolder);
+//        binding.setStateHolder(stateHolder);
         
         // Configure RecyclerView
         binding.recyclerView.setAdapter(new GifAdapter((MainActivity) getActivity()));

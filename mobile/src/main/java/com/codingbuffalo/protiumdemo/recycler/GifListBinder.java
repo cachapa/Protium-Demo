@@ -5,7 +5,7 @@ import android.databinding.ObservableList;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 
-import com.codingbuffalo.data.Gif;
+import com.codingbuffalo.data.model.Gif;
 import com.squareup.picasso.Picasso;
 
 public class GifListBinder {

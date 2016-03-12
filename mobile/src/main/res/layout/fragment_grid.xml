@@ -7,9 +7,9 @@
         
         <import type="android.view.View"/>
         
-        <import type="com.codingbuffalo.data.GifList"/>
+        <import type="com.codingbuffalo.data.model.GifList"/>
         
-        <import type="com.codingbuffalo.data.protium.StateHolder"/>
+        <import type="com.codingbuffalo.data.model.StateHolder"/>
         
         <variable
             name="gifs"

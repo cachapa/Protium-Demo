@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.codingbuffalo.data.Gif;
+import com.codingbuffalo.data.model.Gif;
 import com.codingbuffalo.protiumdemo.R;
 import com.koushikdutta.ion.Ion;
 

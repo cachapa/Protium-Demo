@@ -1,7 +1,7 @@
 package com.codingbuffalo.protiumdemo.registry;
 
-import com.codingbuffalo.data.GiphyRepository;
-import com.codingbuffalo.data.SearchInteractor;
+import com.codingbuffalo.data.repository.GiphyRepository;
+import com.codingbuffalo.data.interactor.SearchInteractor;
 
 import java.util.HashMap;
 import java.util.Map;
