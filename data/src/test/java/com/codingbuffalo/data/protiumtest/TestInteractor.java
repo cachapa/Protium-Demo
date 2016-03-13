@@ -4,8 +4,8 @@ import android.databinding.ObservableInt;
 
 import com.codingbuffalo.data.interactor.Interactor;
 
+import java.io.IOException;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
@@ -15,6 +15,8 @@ public class TestInteractor extends Interactor {
     
     private ObservableInt value;
     private Future        currentTask;
+    
+    private OnErrorListener errorListener;
     
     public TestInteractor() {
         super(Executors.newCachedThreadPool());
@@ -41,17 +43,46 @@ public class TestInteractor extends Interactor {
         return value;
     }
     
+    /**
+     * Composed getter which fetches from two repository in parallel
+     */
     public ObservableInt getParallelSum() {
         currentTask = execute(new ParallelSumTask());
         return value;
     }
     
     /**
+     * Cancels current active task
+     */
+    public void cancel() {
+        currentTask.cancel(false);
+    }
+    
+    /**
+     * Executes a task doomed to fail
+     */
+    public void failTask() {
+        currentTask = execute(new FailTask());
+    }
+    
+    /**
      * Waits until tasks finish.
      * Useful for testing, but not to be used in production code
      */
-    public void join() throws ExecutionException, InterruptedException {
-        currentTask.get();
+    public void join() {
+        try {
+            currentTask.get();
+        } catch (Exception e) {
+            // Ignore
+        }
+    }
+    
+    public void setErrorListener(OnErrorListener errorListener) {
+        this.errorListener = errorListener;
+    }
+    
+    public interface OnErrorListener {
+        void onError(Exception e);
     }
     
     private class SimpleGetTask implements Runnable {
@@ -90,7 +121,7 @@ public class TestInteractor extends Interactor {
                         return fastRepository.getValue();
                     }
                 };
-    
+                
                 Callable<Integer> task2 = new Callable<Integer>() {
                     @Override
                     public Integer call() throws Exception {
@@ -107,6 +138,18 @@ public class TestInteractor extends Interactor {
                 value.set(value1 + value2);
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+        }
+    }
+    
+    private class FailTask implements Runnable {
+        @Override
+        public void run() {
+            try {
+                Thread.sleep(200);
+                throw new IOException("Test exception");
+            } catch (Exception e) {
+                errorListener.onError(e);
             }
         }
     }

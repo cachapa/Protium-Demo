@@ -4,7 +4,7 @@ import android.databinding.ObservableInt;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ProtiumExample {
     @Test
@@ -35,5 +35,34 @@ public class ProtiumExample {
         interactor.join();
         
         assertEquals(7, value.get());
+    }
+    
+    @Test
+    public void failure() {
+        TestInteractor interactor = new TestInteractor();
+        
+        final StringBuilder errorMsg = new StringBuilder();
+        
+        interactor.setErrorListener(new TestInteractor.OnErrorListener() {
+            @Override
+            public void onError(Exception e) {
+                errorMsg.append(e.getMessage());
+            }
+        });
+        interactor.failTask();
+        interactor.join();
+        
+        assertEquals(errorMsg.toString(), "Test exception");
+    }
+    
+    @Test
+    public void cancelTask() throws Exception {
+        TestInteractor interactor = new TestInteractor();
+        
+        ObservableInt value = interactor.getParallelSum();
+        interactor.cancel();
+        interactor.join();
+        
+        assertEquals(0, value.get());
     }
 }
