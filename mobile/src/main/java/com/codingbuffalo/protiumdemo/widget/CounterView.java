@@ -9,11 +9,13 @@ import android.widget.TextView;
 
 import com.codingbuffalo.protiumdemo.R;
 
+import java.util.Locale;
+
 public class CounterView extends TextView {
     private static final String TEMPLATE = "%d of %d";
     
-    private int mCount;
-    private int mTotalCount;
+    private int count;
+    private int totalCount;
     
     public CounterView(Context context) {
         super(context);
@@ -46,11 +48,11 @@ public class CounterView extends TextView {
             int attr = typedArray.getIndex(i);
             switch (attr) {
                 case R.styleable.CounterView_count:
-                    mCount = typedArray.getInt(attr, 0);
+                    count = typedArray.getInt(attr, 0);
                     break;
                 
                 case R.styleable.CounterView_totalCount:
-                    mTotalCount = typedArray.getInt(attr, 0);
+                    totalCount = typedArray.getInt(attr, 0);
                     break;
             }
         }
@@ -60,16 +62,16 @@ public class CounterView extends TextView {
     }
     
     public void setCount(int count) {
-        mCount = count;
+        this.count = count;
         updateText();
     }
     
     public void setTotalCount(int totalCount) {
-        mTotalCount = totalCount;
+        this.totalCount = totalCount;
         updateText();
     }
     
     private void updateText() {
-        setText(String.format(TEMPLATE, mCount, mTotalCount));
+        setText(String.format(Locale.US, TEMPLATE, count, totalCount));
     }
 }

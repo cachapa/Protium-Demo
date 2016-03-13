@@ -7,15 +7,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class InteractorRegistry {
-    private static GiphyRepository               mRepository    = new GiphyRepository();
-    private static Map<String, SearchInteractor> mInteractorMap = new HashMap<>();
+    private static GiphyRepository               repository    = new GiphyRepository();
+    private static Map<String, SearchInteractor> interactorMap = new HashMap<>();
     
     public synchronized static SearchInteractor getSearchInteractor(String query) {
-        if (!mInteractorMap.containsKey(query)) {
-            SearchInteractor interactor = new SearchInteractor(mRepository, query);
-            mInteractorMap.put(query, interactor);
+        if (!interactorMap.containsKey(query)) {
+            SearchInteractor interactor = new SearchInteractor(repository, query);
+            interactorMap.put(query, interactor);
         }
         
-        return mInteractorMap.get(query);
+        return interactorMap.get(query);
     }
 }

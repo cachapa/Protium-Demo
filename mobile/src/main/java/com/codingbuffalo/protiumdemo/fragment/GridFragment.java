@@ -10,8 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.codingbuffalo.data.model.GifList;
 import com.codingbuffalo.data.interactor.SearchInteractor;
+import com.codingbuffalo.data.model.GifList;
+import com.codingbuffalo.data.model.StateHolder;
 import com.codingbuffalo.protiumdemo.MainActivity;
 import com.codingbuffalo.protiumdemo.R;
 import com.codingbuffalo.protiumdemo.databinding.FragmentGridBinding;
@@ -19,18 +20,18 @@ import com.codingbuffalo.protiumdemo.recycler.GifAdapter;
 import com.codingbuffalo.protiumdemo.registry.InteractorRegistry;
 
 public class GridFragment extends Fragment {
-    private SearchInteractor mSearchInteractor;
+    private SearchInteractor searchInteractor;
     
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mSearchInteractor = InteractorRegistry.getSearchInteractor("beer");
-        GifList     gifs        = mSearchInteractor.getGifs();
-//        StateHolder stateHolder = mSearchInteractor.getStateHolder();
+        searchInteractor = InteractorRegistry.getSearchInteractor("beer");
+        GifList     gifs        = searchInteractor.getGifs();
+        StateHolder stateHolder = searchInteractor.getStateHolder();
         
         FragmentGridBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_grid, container, false);
         binding.setGifs(gifs);
-//        binding.setStateHolder(stateHolder);
+        binding.setStateHolder(stateHolder);
         
         // Configure RecyclerView
         binding.recyclerView.setAdapter(new GifAdapter((MainActivity) getActivity()));
@@ -45,7 +46,7 @@ public class GridFragment extends Fragment {
             int lastItem = ((GridLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
             
             if (lastItem > recyclerView.getAdapter().getItemCount() - 10) {
-                mSearchInteractor.fetchNextPage();
+                searchInteractor.fetchNextPage();
             }
         }
     }

@@ -3,6 +3,7 @@ package com.codingbuffalo.data.interactor;
 import com.codingbuffalo.data.model.Gif;
 import com.codingbuffalo.data.model.GifList;
 import com.codingbuffalo.data.model.Page;
+import com.codingbuffalo.data.model.StateHolder;
 import com.codingbuffalo.data.repository.GiphyRepository;
 
 import java.io.IOException;
@@ -11,11 +12,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class SearchInteractor extends Interactor {
-    private GiphyRepository mRepository;
-    private String          mQuery;
-    private Future          mFuture;
+    private GiphyRepository repository;
+    private String          query;
+    private Future          future;
     
-    private GifList mGifs;
+    private StateHolder stateHolder;
+    private GifList     gifs;
     
     public SearchInteractor(GiphyRepository repository, String query) {
         this(Executors.newCachedThreadPool(), repository, query);
@@ -24,20 +26,28 @@ public class SearchInteractor extends Interactor {
     public SearchInteractor(ExecutorService service, GiphyRepository repository, String query) {
         super(service);
         
-        mRepository = repository;
-        mQuery = query;
+        this.repository = repository;
+        this.query = query;
         
-        mGifs = new GifList();
+        stateHolder = new StateHolder();
+        gifs = new GifList();
+    }
+    
+    public StateHolder getStateHolder() {
+        return stateHolder;
     }
     
     public GifList getGifs() {
-        fetchNextPage();
-        return mGifs;
+        if (gifs.getList().isEmpty()) {
+            fetchNextPage();
+        }
+        
+        return gifs;
     }
     
     public synchronized void fetchNextPage() {
-        if (mFuture == null || mFuture.isDone()) {
-            mFuture = execute(new SearchTask());
+        if (future == null || future.isDone()) {
+            future = execute(new SearchTask());
         }
     }
     
@@ -46,9 +56,13 @@ public class SearchInteractor extends Interactor {
         @Override
         public void run() {
             try {
-                Page<Gif> page = mRepository.search(mQuery, mGifs.getList().size());
-                mGifs.getList().addAll(page.getEntries());
-                mGifs.setTotalCount(page.getTotalCount());
+                stateHolder.setState(StateHolder.State.WORKING);
+                
+                Page<Gif> page = repository.search(query, gifs.getList().size());
+                gifs.getList().addAll(page.getEntries());
+                gifs.setTotalCount(page.getTotalCount());
+    
+                stateHolder.setState(StateHolder.State.IDLE);
             } catch (IOException e) {
                 e.printStackTrace();
             }

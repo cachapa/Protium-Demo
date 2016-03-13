@@ -15,12 +15,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class GifAdapter extends RecyclerView.Adapter<GifAdapter.ViewHolder> {
-    private MainActivity mActivity;
-    private List<Gif>    mGifs;
+    private MainActivity activity;
+    private List<Gif>    gifs;
     
     public GifAdapter(MainActivity activity) {
-        mActivity = activity;
-        mGifs = new LinkedList<>();
+        this.activity = activity;
+        gifs = new LinkedList<>();
     }
     
     @Override
@@ -31,18 +31,18 @@ public class GifAdapter extends RecyclerView.Adapter<GifAdapter.ViewHolder> {
     
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Gif gif = mGifs.get(position);
+        Gif gif = gifs.get(position);
         holder.binder.setGif(gif);
         holder.binder.executePendingBindings(); // Required to avoid the previous image showing for one frame on fast scrolls
     }
     
     @Override
     public int getItemCount() {
-        return mGifs.size();
+        return gifs.size();
     }
     
     public void setGifs(List<Gif> gifs) {
-        mGifs = gifs;
+        this.gifs = gifs;
         notifyDataSetChanged();
     }
     
@@ -58,8 +58,8 @@ public class GifAdapter extends RecyclerView.Adapter<GifAdapter.ViewHolder> {
     
         @Override
         public void onClick(View v) {
-            Gif gif = mGifs.get(getAdapterPosition());
-            mActivity.openGif(gif);
+            Gif gif = gifs.get(getAdapterPosition());
+            activity.openGif(gif);
         }
     }
 }

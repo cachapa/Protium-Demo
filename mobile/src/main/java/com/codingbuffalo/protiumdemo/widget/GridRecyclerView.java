@@ -10,7 +10,7 @@ import com.codingbuffalo.protiumdemo.recycler.GridItemDecoration;
 import com.codingbuffalo.protiumdemo.R;
 
 public class GridRecyclerView extends RecyclerView {
-    private int mItemSize;
+    private int itemSize;
     
     public GridRecyclerView(Context context) {
         super(context);
@@ -28,7 +28,7 @@ public class GridRecyclerView extends RecyclerView {
     }
     
     private void init() {
-        mItemSize = (int) getContext().getResources().getDimension(R.dimen.grid_item_size);
+        itemSize = (int) getContext().getResources().getDimension(R.dimen.grid_item_size);
         
         setLayoutManager(new GridLayoutManager(getContext(), 1));
         addItemDecoration(new GridItemDecoration(getContext(), getLayoutManager(), R.dimen.grid_margin));
@@ -43,7 +43,7 @@ public class GridRecyclerView extends RecyclerView {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
     
-        int columnCount = (int) Math.ceil(w / mItemSize);
+        int columnCount = (int) Math.ceil(w / itemSize);
         getLayoutManager().setSpanCount(columnCount);
         invalidateItemDecorations();
     }
