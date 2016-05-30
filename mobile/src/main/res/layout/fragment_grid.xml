@@ -7,9 +7,9 @@
 
         <import type="android.view.View" />
 
-        <import type="com.codingbuffalo.data.model.GifList" />
+        <import type="net.cachapa.data.model.GifList" />
 
-        <import type="com.codingbuffalo.data.model.StateHolder" />
+        <import type="net.cachapa.data.model.StateHolder" />
 
         <variable
             name="gifs"
@@ -24,9 +24,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context="com.codingbuffalo.protiumdemo.MainActivity">
+        tools:context="net.cachapa.protiumdemo.MainActivity">
 
-        <com.codingbuffalo.protiumdemo.widget.GridRecyclerView
+        <net.cachapa.protiumdemo.widget.GridRecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -45,7 +45,7 @@
             android:paddingStart="8dp"
             android:paddingTop="4dp">
 
-            <com.codingbuffalo.protiumdemo.widget.CounterView
+            <net.cachapa.protiumdemo.widget.CounterView
                 android:id="@+id/counter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

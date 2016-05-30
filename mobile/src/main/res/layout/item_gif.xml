@@ -4,14 +4,14 @@
     
     <data>
         
-        <import type="com.codingbuffalo.data.model.Gif"/>
+        <import type="net.cachapa.data.model.Gif"/>
         
         <variable
             name="gif"
             type="Gif"/>
     </data>
     
-    <com.codingbuffalo.protiumdemo.widget.SquareImageView
+    <net.cachapa.protiumdemo.widget.SquareImageView
         android:id="@+id/image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,4 +19,5 @@
         android:orientation="vertical"
         android:scaleType="centerCrop"
         auto:gif_item="@{gif}"/>
+    
 </layout>
