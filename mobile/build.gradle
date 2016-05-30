@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "23.0.3"
     
     defaultConfig {
         applicationId "com.codingbuffalo.protiumdemo"
@@ -25,8 +25,8 @@ dependencies {
     // Load gifs - Picasso does not support animated gifs and ion wasn't working properly with the grid view
     compile 'com.koushikdutta.ion:ion:2.1.7'
     // Android support libs
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:recyclerview-v7:23.4.0'
     
     testCompile 'junit:junit:4.12'
 }
