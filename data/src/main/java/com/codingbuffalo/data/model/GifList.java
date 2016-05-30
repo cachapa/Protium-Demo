@@ -1,27 +1,31 @@
 package com.codingbuffalo.data.model;
 
-import android.databinding.ObservableArrayList;
-import android.databinding.ObservableInt;
-import android.databinding.ObservableList;
+import android.databinding.BaseObservable;
 
-public class GifList {
-    private ObservableList<Gif> mList;
-    private ObservableInt       mTotalCount;
+import java.util.ArrayList;
+import java.util.List;
+
+public class GifList extends BaseObservable {
+    private List<Gif> mList;
+    private int mTotalCount;
     
     public GifList() {
-        mList = new ObservableArrayList<>();
-        mTotalCount = new ObservableInt(0);
+        mList = new ArrayList<>();
+        mTotalCount = 0;
     }
     
-    public ObservableList<Gif> getList() {
+    public List<Gif> getList() {
         return mList;
     }
     
-    public void setTotalCount(int totalCount) {
-        mTotalCount.set(totalCount);
-    }
-    
-    public ObservableInt getTotalCount() {
+    public int getTotalCount() {
         return mTotalCount;
+    }
+
+    public void setData(List<Gif> gifs, int totalCount) {
+        mList.addAll(gifs);
+        mTotalCount = totalCount;
+        
+        notifyChange();
     }
 }

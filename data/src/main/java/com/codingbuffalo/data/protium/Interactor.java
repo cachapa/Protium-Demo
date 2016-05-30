@@ -1,8 +1,7 @@
-package com.codingbuffalo.data.interactor;
+package com.codingbuffalo.data.protium;
 
 import android.support.annotation.NonNull;
 
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
@@ -14,12 +13,7 @@ public abstract class Interactor {
     }
     
     @NonNull
-    protected final Future execute(@NonNull Runnable task) {
-        return mService.submit(task);
-    }
-    
-    @NonNull
-    protected final <T> Future<T> execute(@NonNull Callable<T> task) {
+    protected final <T> Future<T> execute(@NonNull Task<T> task) {
         return mService.submit(task);
     }
 }

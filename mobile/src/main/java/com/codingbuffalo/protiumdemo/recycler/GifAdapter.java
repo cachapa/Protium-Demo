@@ -42,7 +42,8 @@ public class GifAdapter extends RecyclerView.Adapter<GifAdapter.ViewHolder> {
     }
     
     public void setGifs(List<Gif> gifs) {
-        this.gifs = gifs;
+        this.gifs.clear();
+        this.gifs.addAll(gifs);
         notifyDataSetChanged();
     }
     

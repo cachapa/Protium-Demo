@@ -1,6 +1,5 @@
 package com.codingbuffalo.data;
 
-import com.codingbuffalo.data.model.Gif;
 import com.codingbuffalo.data.model.Page;
 import com.codingbuffalo.data.repository.GiphyRepository;
 
@@ -20,7 +19,7 @@ public class GiphyRepositoryTests {
     
     @Test
     public void search() throws Exception {
-        Page<Gif> gifPage = mRepository.search("beer", 0);
+        Page gifPage = mRepository.search("beer", 0);
         
         assertEquals(gifPage.getEntries().size(), 25);
         assertTrue(gifPage.getTotalCount() > 1000);

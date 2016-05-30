@@ -1,12 +1,12 @@
 package com.codingbuffalo.data.interactor;
 
-import com.codingbuffalo.data.model.Gif;
 import com.codingbuffalo.data.model.GifList;
 import com.codingbuffalo.data.model.Page;
 import com.codingbuffalo.data.model.StateHolder;
+import com.codingbuffalo.data.protium.Interactor;
+import com.codingbuffalo.data.protium.ValueTask;
 import com.codingbuffalo.data.repository.GiphyRepository;
 
-import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -52,20 +52,24 @@ public class SearchInteractor extends Interactor {
     }
     
     /* Tasks */
-    private class SearchTask implements Runnable {
+    private class SearchTask extends ValueTask<Page> {
         @Override
-        public void run() {
-            try {
-                stateHolder.setState(StateHolder.State.WORKING);
-                
-                Page<Gif> page = repository.search(query, gifs.getList().size());
-                gifs.getList().addAll(page.getEntries());
-                gifs.setTotalCount(page.getTotalCount());
-    
-                stateHolder.setState(StateHolder.State.IDLE);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        public Page onExecute() throws Exception {
+            stateHolder.setState(StateHolder.State.WORKING);
+            
+            return repository.search(query, gifs.getList().size());
+        }
+
+        @Override
+        public void onComplete(Page data) {
+            gifs.setData(data.getEntries(), data.getTotalCount());
+            stateHolder.setState(StateHolder.State.IDLE);
+        }
+
+        @Override
+        public void onError(Exception e) {
+            e.printStackTrace();
+            stateHolder.setFailure(e);
         }
     }
 }

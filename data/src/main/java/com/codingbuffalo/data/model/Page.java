@@ -4,12 +4,12 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Page<T> {
+public class Page {
     @SerializedName("data")
-    private List<T>    entries;
+    private List<Gif>    entries;
     private Pagination pagination;
     
-    public List<T> getEntries() {
+    public List<Gif> getEntries() {
         return entries;
     }
     

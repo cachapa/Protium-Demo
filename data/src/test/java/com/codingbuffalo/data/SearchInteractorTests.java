@@ -24,6 +24,6 @@ public class SearchInteractorTests {
         GifList gifList = mInteractor.getGifs();
         
         assertEquals(gifList.getList().size(), 25);
-        assertTrue(gifList.getTotalCount().get() > 1000);
+        assertTrue(gifList.getTotalCount() > 1000);
     }
 }

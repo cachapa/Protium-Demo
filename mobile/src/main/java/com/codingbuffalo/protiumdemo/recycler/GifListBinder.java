@@ -1,16 +1,17 @@
 package com.codingbuffalo.protiumdemo.recycler;
 
 import android.databinding.BindingAdapter;
-import android.databinding.ObservableList;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 
 import com.codingbuffalo.data.model.Gif;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 public class GifListBinder {
     @BindingAdapter("gif_list")
-    public static void bindList(RecyclerView view, ObservableList<Gif> list) {
+    public static void bindList(RecyclerView view, List<Gif> list) {
         ((GifAdapter) view.getAdapter()).setGifs(list);
     }
     

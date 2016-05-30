@@ -1,34 +1,17 @@
 package com.codingbuffalo.data.repository;
 
-import com.codingbuffalo.data.model.Gif;
 import com.codingbuffalo.data.model.Page;
+import com.codingbuffalo.data.protium.RestRepository;
 
 import java.io.IOException;
+import java.util.Locale;
 
-import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.GET;
-import retrofit2.http.Query;
-
-public class GiphyRepository {
-    private final Service mService;
+public class GiphyRepository extends RestRepository {
+    private static final String URL_FORMAT = "http://api.giphy.com/v1/gifs/search?api_key=%s&q=%s&offset=%d";
+    private static final String API_KEY = "dc6zaTOxFJmzC";
     
-    public GiphyRepository() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://api.giphy.com")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        
-        mService = retrofit.create(Service.class);
-    }
-    
-    public Page<Gif> search(String query, int skip) throws IOException {
-        return mService.search(query, skip).execute().body();
-    }
-    
-    public interface Service {
-        @GET("/v1/gifs/search?api_key=dc6zaTOxFJmzC")
-        Call<Page<Gif>> search(@Query("q") String query, @Query("offset") int offset);
+    public Page search(String query, int skip) throws IOException {
+        String url = String.format(Locale.US, URL_FORMAT, API_KEY, query, skip);
+        return fetch(Page.class, url);
     }
 }
