@@ -6,6 +6,8 @@ import net.cachapa.data.repository.GiphyRepository;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -15,6 +17,13 @@ public class GiphyRepositoryTests {
     @Before
     public void setup() {
         mRepository = new GiphyRepository();
+    }
+
+    @Test
+    public void suggestions() throws Exception {
+        List<String> suggestions = mRepository.getSuggestions("ca");
+
+        assertEquals(suggestions.size(), 25);
     }
     
     @Test

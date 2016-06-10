@@ -7,13 +7,13 @@
 
         <import type="android.view.View" />
 
-        <import type="net.cachapa.data.model.GifList" />
+        <import type="net.cachapa.data.model.GifsObservable" />
 
         <import type="net.cachapa.data.model.StateHolder" />
 
         <variable
             name="gifs"
-            type="GifList" />
+            type="GifsObservable" />
 
         <variable
             name="stateHolder"

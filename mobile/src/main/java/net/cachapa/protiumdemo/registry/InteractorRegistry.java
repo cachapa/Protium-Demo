@@ -3,19 +3,17 @@ package net.cachapa.protiumdemo.registry;
 import net.cachapa.data.interactor.SearchInteractor;
 import net.cachapa.data.repository.GiphyRepository;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.Executors;
 
 public class InteractorRegistry {
-    private static GiphyRepository repository    = new GiphyRepository();
-    private static Map<String, SearchInteractor> interactorMap = new HashMap<>();
-    
-    public synchronized static SearchInteractor getSearchInteractor(String query) {
-        if (!interactorMap.containsKey(query)) {
-            SearchInteractor interactor = new SearchInteractor(repository, query);
-            interactorMap.put(query, interactor);
+    private static GiphyRepository repository = new GiphyRepository();
+    private static SearchInteractor interactor;
+
+    public synchronized static SearchInteractor getSearchInteractor() {
+        if (interactor == null) {
+            interactor = new SearchInteractor(Executors.newCachedThreadPool(), repository);
         }
-        
-        return interactorMap.get(query);
+
+        return interactor;
     }
 }
