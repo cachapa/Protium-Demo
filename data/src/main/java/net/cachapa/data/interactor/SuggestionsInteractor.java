@@ -2,17 +2,17 @@ package net.cachapa.data.interactor;
 
 import android.widget.Filter;
 
-import net.cachapa.data.repository.GiphyRepository;
+import net.cachapa.data.gateway.GiphyGateway;
 
 import java.io.IOException;
 import java.util.List;
 
 public class SuggestionsInteractor extends Filter {
-    private GiphyRepository repository;
+    private GiphyGateway gateway;
     private OnSuggestionsAvailableListener listener;
 
-    public SuggestionsInteractor(GiphyRepository repository) {
-        this.repository = repository;
+    public SuggestionsInteractor(GiphyGateway gateway) {
+        this.gateway = gateway;
     }
 
     @Override
@@ -23,7 +23,7 @@ public class SuggestionsInteractor extends Filter {
 
         List<String> suggestions = null;
         try {
-            suggestions = repository.getSuggestions(constraint.toString());
+            suggestions = gateway.getSuggestions(constraint.toString());
         } catch (IOException e) {
             e.printStackTrace();
             return null;

@@ -1,14 +1,14 @@
-package net.cachapa.data.repository;
+package net.cachapa.data.gateway;
 
 import net.cachapa.data.model.Page;
 import net.cachapa.data.model.Suggestions;
-import net.cachapa.protium.RestRepository;
+import net.cachapa.protium.RestGateway;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class GiphyRepository extends RestRepository {
+public class GiphyGateway extends RestGateway {
     private static final String SUGGESTIONS_FORMAT = "http://giphy.com/ajax/tags/search/?q=%s";
     private static final String SEARCH_FORMAT = "http://api.giphy.com/v1/gifs/search?api_key=%s&q=%s&offset=%d";
     private static final String API_KEY = "dc6zaTOxFJmzC";

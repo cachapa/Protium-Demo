@@ -1,9 +1,9 @@
 package net.cachapa.data.protiumtest;
 
-public class TestRepository {
+public class TestGateway {
     public int mValue;
     
-    public TestRepository(int value) {
+    public TestGateway(int value) {
         mValue = value;
     }
     

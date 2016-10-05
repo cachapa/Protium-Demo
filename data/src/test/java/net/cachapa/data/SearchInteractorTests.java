@@ -3,7 +3,7 @@ package net.cachapa.data;
 import net.cachapa.data.interactor.SearchInteractor;
 import net.cachapa.data.mock.BlockingExecutorService;
 import net.cachapa.data.model.GifsObservable;
-import net.cachapa.data.repository.GiphyRepository;
+import net.cachapa.data.gateway.GiphyGateway;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +16,7 @@ public class SearchInteractorTests {
     
     @Before
     public void setup() {
-        mInteractor = new SearchInteractor(new BlockingExecutorService(), new GiphyRepository(), "beer");
+        mInteractor = new SearchInteractor(new BlockingExecutorService(), new GiphyGateway());
     }
     
     @Test

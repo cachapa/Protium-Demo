@@ -10,8 +10,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class TestInteractor extends Interactor {
-    private TestRepository fastRepository;
-    private TestRepository slowRepository;
+    private TestGateway fastGateway;
+    private TestGateway slowGateway;
 
     private ObservableInt value;
     private Future currentTask;
@@ -21,8 +21,8 @@ public class TestInteractor extends Interactor {
     public TestInteractor() {
         super(Executors.newCachedThreadPool());
 
-        fastRepository = new TestRepository(2);
-        slowRepository = new TestRepository(5);
+        fastGateway = new TestGateway(2);
+        slowGateway = new TestGateway(5);
 
         value = new ObservableInt(0);
     }
@@ -88,7 +88,7 @@ public class TestInteractor extends Interactor {
     private class SimpleGetTask extends SimpleTask {
         @Override
         public void onExecute() throws Exception {
-            int value = slowRepository.getValue();
+            int value = slowGateway.getValue();
             TestInteractor.this.value.set(value);
         }
     }
@@ -96,8 +96,8 @@ public class TestInteractor extends Interactor {
     private class SequentialSumTask extends SimpleTask {
         @Override
         public void onExecute() throws Exception {
-            int value1 = fastRepository.getValue();
-            int value2 = slowRepository.getValue();
+            int value1 = fastGateway.getValue();
+            int value2 = slowGateway.getValue();
 
             value.set(value1 + value2);
         }
@@ -109,14 +109,14 @@ public class TestInteractor extends Interactor {
             ValueTask<Integer> task1 = new ValueTask<Integer>() {
                 @Override
                 public Integer onExecute() throws Exception {
-                    return fastRepository.getValue();
+                    return fastGateway.getValue();
                 }
             };
 
             ValueTask<Integer> task2 = new ValueTask<Integer>() {
                 @Override
                 public Integer onExecute() throws Exception {
-                    return slowRepository.getValue();
+                    return slowGateway.getValue();
                 }
             };
 

@@ -1,7 +1,7 @@
 package net.cachapa.data;
 
 import net.cachapa.data.model.Page;
-import net.cachapa.data.repository.GiphyRepository;
+import net.cachapa.data.gateway.GiphyGateway;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,12 +11,12 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class GiphyRepositoryTests {
-    private GiphyRepository mRepository;
+public class GiphyGatewayTests {
+    private GiphyGateway mRepository;
     
     @Before
     public void setup() {
-        mRepository = new GiphyRepository();
+        mRepository = new GiphyGateway();
     }
 
     @Test

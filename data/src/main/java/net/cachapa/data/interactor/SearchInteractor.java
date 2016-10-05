@@ -3,7 +3,7 @@ package net.cachapa.data.interactor;
 import net.cachapa.data.model.GifsObservable;
 import net.cachapa.data.model.Page;
 import net.cachapa.data.model.StateHolder;
-import net.cachapa.data.repository.GiphyRepository;
+import net.cachapa.data.gateway.GiphyGateway;
 import net.cachapa.protium.Interactor;
 import net.cachapa.protium.ValueTask;
 
@@ -11,17 +11,17 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 public class SearchInteractor extends Interactor {
-    private GiphyRepository repository;
+    private GiphyGateway gateway;
     private String          query;
     private Future          future;
     
     private StateHolder stateHolder;
     private GifsObservable gifsObservable;
     
-    public SearchInteractor(ExecutorService service, GiphyRepository repository) {
+    public SearchInteractor(ExecutorService service, GiphyGateway gateway) {
         super(service);
         
-        this.repository = repository;
+        this.gateway = gateway;
         
         stateHolder = new StateHolder();
         gifsObservable = new GifsObservable();
@@ -57,7 +57,7 @@ public class SearchInteractor extends Interactor {
         public Page onExecute() throws Exception {
             stateHolder.setState(StateHolder.State.WORKING);
             
-            return repository.search(query, gifsObservable.getList().size());
+            return gateway.search(query, gifsObservable.getList().size());
         }
 
         @Override

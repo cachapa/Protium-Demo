@@ -12,7 +12,7 @@ import android.widget.AutoCompleteTextView;
 
 import net.cachapa.data.interactor.SuggestionsInteractor;
 import net.cachapa.data.model.Gif;
-import net.cachapa.data.repository.GiphyRepository;
+import net.cachapa.data.gateway.GiphyGateway;
 import net.cachapa.protiumdemo.fragment.GridFragment;
 import net.cachapa.protiumdemo.fragment.ImageFragment;
 import net.cachapa.protiumdemo.recycler.SuggestionsAdapter;
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
-        SuggestionsInteractor interactor = new SuggestionsInteractor(new GiphyRepository());
+        SuggestionsInteractor interactor = new SuggestionsInteractor(new GiphyGateway());
 
         AutoCompleteTextView autocomplete = (AutoCompleteTextView) MenuItemCompat.getActionView(searchMenuItem).findViewById(R.id.autocomplete);
         autocomplete.setThreshold(1);
