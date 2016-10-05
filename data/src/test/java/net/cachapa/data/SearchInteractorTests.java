@@ -22,8 +22,9 @@ public class SearchInteractorTests {
     @Test
     public void search() throws Exception {
         GifsObservable gifsObservable = mInteractor.getGifsObservable();
+        mInteractor.setQuery("beer");
         
-        assertEquals(gifsObservable.getList().size(), 25);
+        assertEquals(25, gifsObservable.getList().size());
         assertTrue(gifsObservable.getTotalCount() > 1000);
     }
 }
