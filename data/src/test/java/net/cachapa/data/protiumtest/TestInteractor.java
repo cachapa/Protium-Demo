@@ -111,12 +111,20 @@ public class TestInteractor extends Interactor {
                 public Integer onExecute() throws Exception {
                     return fastGateway.getValue();
                 }
+
+                @Override
+                public void onComplete(Integer data) {
+                }
             };
 
             ValueTask<Integer> task2 = new ValueTask<Integer>() {
                 @Override
                 public Integer onExecute() throws Exception {
                     return slowGateway.getValue();
+                }
+
+                @Override
+                public void onComplete(Integer data) {
                 }
             };
 

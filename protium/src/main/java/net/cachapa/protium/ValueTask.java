@@ -19,6 +19,5 @@ public abstract class ValueTask<T> extends Task<T> {
 
     public abstract T onExecute() throws Exception;
     
-    public void onComplete(T data) {
-    }
+    public abstract void onComplete(T data);
 }
