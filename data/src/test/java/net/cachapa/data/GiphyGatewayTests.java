@@ -1,5 +1,6 @@
 package net.cachapa.data;
 
+import net.cachapa.data.gateway.ClientManager;
 import net.cachapa.data.model.Page;
 import net.cachapa.data.gateway.GiphyGateway;
 
@@ -16,21 +17,21 @@ public class GiphyGatewayTests {
     
     @Before
     public void setup() {
-        mRepository = new GiphyGateway();
+        mRepository = new GiphyGateway(ClientManager.getClient());
     }
 
     @Test
     public void suggestions() throws Exception {
         List<String> suggestions = mRepository.getSuggestions("ca");
 
-        assertEquals(suggestions.size(), 25);
+        assertEquals(8, suggestions.size());
     }
     
     @Test
     public void search() throws Exception {
         Page gifPage = mRepository.search("beer", 0);
         
-        assertEquals(gifPage.getEntries().size(), 25);
-        assertTrue(gifPage.getTotalCount() > 1000);
+        assertEquals(25, gifPage.getEntries().size());
+        assertTrue(gifPage.total() > 1000);
     }
 }

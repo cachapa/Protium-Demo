@@ -10,56 +10,61 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import net.cachapa.data.gateway.ClientManager;
+import net.cachapa.data.gateway.GiphyGateway;
 import net.cachapa.data.interactor.SearchInteractor;
-import net.cachapa.data.model.GifsObservable;
-import net.cachapa.data.model.StateHolder;
 import net.cachapa.protiumdemo.MainActivity;
 import net.cachapa.protiumdemo.R;
 import net.cachapa.protiumdemo.databinding.FragmentGridBinding;
 import net.cachapa.protiumdemo.recycler.GifAdapter;
-import net.cachapa.protiumdemo.registry.InteractorRegistry;
 
-public class GridFragment extends Fragment {
+import java.util.concurrent.Executors;
+
+public class ResultsFragment extends Fragment {
     private static final String KEY_QUERY = "query";
-    
-    private String query;
-    private SearchInteractor searchInteractor;
-    
+
+    private GiphyGateway gateway = new GiphyGateway(ClientManager.getClient());
+    private SearchInteractor interactor;
+
+    public static ResultsFragment create(String query) {
+        Bundle args = new Bundle();
+        args.putString(KEY_QUERY, query);
+
+        //noinspection deprecation
+        ResultsFragment fragment = new ResultsFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    /**
+     * @deprecated Use {@link #create(String)} instead
+     */
+    @Deprecated
+    public ResultsFragment() {
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        String query = getArguments().getString(KEY_QUERY);
+        interactor = new SearchInteractor(Executors.newCachedThreadPool(), gateway, query);
+        interactor.fetch();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            query = savedInstanceState.getString(KEY_QUERY);
-        } else {
-            query = "beer";
-        }
-        
-        searchInteractor = InteractorRegistry.getSearchInteractor();
-        GifsObservable gifs = searchInteractor.getGifsObservable();
-        StateHolder stateHolder = searchInteractor.getStateHolder();
-
         FragmentGridBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_grid, container, false);
-        binding.setGifs(gifs);
-        binding.setStateHolder(stateHolder);
 
         // Configure RecyclerView
         binding.recyclerView.setAdapter(new GifAdapter((MainActivity) getActivity()));
         binding.recyclerView.addOnScrollListener(new PagingScrollListener());
-        
-        searchInteractor.setQuery(query);
+
+        // Bind data
+        binding.setObservable(interactor.getObservable());
 
         return binding.getRoot();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putString(KEY_QUERY, query);
-        super.onSaveInstanceState(outState);
-    }
-
-    public void setQuery(String query) {
-        this.query = query;
-        searchInteractor.setQuery(query);
     }
 
     private class PagingScrollListener extends RecyclerView.OnScrollListener {
@@ -68,7 +73,7 @@ public class GridFragment extends Fragment {
             int lastItem = ((GridLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
 
             if (lastItem > recyclerView.getAdapter().getItemCount() - 10) {
-                searchInteractor.fetchNextPage();
+                interactor.fetch();
             }
         }
     }

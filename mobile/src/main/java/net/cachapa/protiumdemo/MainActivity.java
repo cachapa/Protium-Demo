@@ -10,20 +10,27 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 
+import net.cachapa.data.gateway.ClientManager;
 import net.cachapa.data.interactor.SuggestionsInteractor;
 import net.cachapa.data.model.Gif;
 import net.cachapa.data.gateway.GiphyGateway;
-import net.cachapa.protiumdemo.fragment.GridFragment;
+import net.cachapa.protiumdemo.fragment.ResultsFragment;
 import net.cachapa.protiumdemo.fragment.ImageFragment;
 import net.cachapa.protiumdemo.recycler.SuggestionsAdapter;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+    private static final String DEFAULT_QUERY = "beer";
+    
     private MenuItem searchMenuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        if (savedInstanceState == null) {
+            showResults(DEFAULT_QUERY);
+        }
     }
     
     @Override
@@ -45,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
-        SuggestionsInteractor interactor = new SuggestionsInteractor(new GiphyGateway());
+        SuggestionsInteractor interactor = new SuggestionsInteractor(new GiphyGateway(ClientManager.getClient()));
 
         AutoCompleteTextView autocomplete = (AutoCompleteTextView) MenuItemCompat.getActionView(searchMenuItem).findViewById(R.id.autocomplete);
         autocomplete.setThreshold(1);
@@ -64,8 +71,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         String query = (String) parent.getAdapter().getItem(position);
         searchMenuItem.collapseActionView();
-
-        GridFragment fragment = (GridFragment) getSupportFragmentManager().findFragmentById(R.id.grid_fragment);
-        fragment.setQuery(query);
+        showResults(query);
+    }
+    
+    private void showResults(String query) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, ResultsFragment.create(query))
+                .commit();
     }
 }

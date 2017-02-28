@@ -1,4 +1,4 @@
-package net.cachapa.data.protiumtest;
+package net.cachapa.protium;
 
 public class TestGateway {
     public int mValue;

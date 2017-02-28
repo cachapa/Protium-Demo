@@ -6,41 +6,34 @@ import java.io.IOException;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.logging.HttpLoggingInterceptor;
 
 public class RestGateway {
-    
-    private static OkHttpClient client;
     private static Gson jsonParser;
 
+    private OkHttpClient client;
+    private String userAgent;
+
+    public RestGateway(OkHttpClient client, String userAgent) {
+        this.client = client;
+        this.userAgent = userAgent;
+
+        if (jsonParser == null) {
+            jsonParser = new Gson();
+        }
+    }
+
     protected <T> T fetch(Class<T> tClass, String url) throws IOException {
-        createClient();
-        
         Request request = new Request.Builder()
                 .url(url)
+                .addHeader("user-agent", userAgent)
                 .get()
                 .build();
-        
+
         String json = client.newCall(request)
                 .execute()
                 .body()
                 .string();
 
         return jsonParser.fromJson(json, tClass);
-    }
-
-    private synchronized void createClient() {
-        if (client == null) {
-            HttpLoggingInterceptor.Level logLevel = HttpLoggingInterceptor.Level.BODY;
-
-            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-            loggingInterceptor.setLevel(logLevel);
-
-            client = new OkHttpClient.Builder()
-                    .addInterceptor(loggingInterceptor)
-                    .build();
-
-            jsonParser = new Gson();
-        }
     }
 }

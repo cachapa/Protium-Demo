@@ -1,75 +1,48 @@
 package net.cachapa.data.interactor;
 
-import net.cachapa.data.model.GifsObservable;
-import net.cachapa.data.model.Page;
-import net.cachapa.data.model.StateHolder;
 import net.cachapa.data.gateway.GiphyGateway;
+import net.cachapa.data.model.Page;
 import net.cachapa.protium.Interactor;
-import net.cachapa.protium.ValueTask;
+import net.cachapa.protium.ObservableModel;
+import net.cachapa.protium.Task;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 public class SearchInteractor extends Interactor {
     private GiphyGateway gateway;
-    private String          query;
-    private Future          future;
-    
-    private StateHolder stateHolder;
-    private GifsObservable gifsObservable;
-    
-    public SearchInteractor(ExecutorService service, GiphyGateway gateway) {
+    private String query;
+    private Page page;
+    private ObservableModel<Page> observable;
+    private Future future;
+
+    public SearchInteractor(ExecutorService service, GiphyGateway gateway, String query) {
         super(service);
-        
         this.gateway = gateway;
-        
-        stateHolder = new StateHolder();
-        gifsObservable = new GifsObservable();
-    }
-    
-    public StateHolder getStateHolder() {
-        return stateHolder;
-    }
-    
-    public GifsObservable getGifsObservable() {
-        return gifsObservable;
-    }
-
-    public void setQuery(String query) {
-        if (future != null && !future.isDone()) {
-            future.cancel(true);
-        }
-        
         this.query = query;
-        gifsObservable.clear();
-        fetchNextPage();
+
+        page = new Page();
+        observable = new ObservableModel<>(page);
     }
 
-    public synchronized void fetchNextPage() {
+    public ObservableModel<Page> getObservable() {
+        return observable;
+    }
+
+    public void fetch() {
         if (future == null || future.isDone()) {
-            future = execute(new SearchTask());
+            future = execute(new SearchTask(), observable);
         }
     }
 
     /* Tasks */
-    private class SearchTask extends ValueTask<Page> {
+    private class SearchTask implements Task<Page> {
         @Override
-        public Page onExecute() throws Exception {
-            stateHolder.setState(StateHolder.State.WORKING);
-            
-            return gateway.search(query, gifsObservable.getList().size());
-        }
-
-        @Override
-        public void onComplete(Page data) {
-            gifsObservable.setData(data.getEntries(), data.getTotalCount());
-            stateHolder.setState(StateHolder.State.IDLE);
-        }
-
-        @Override
-        public void onError(Exception e) {
-            e.printStackTrace();
-            stateHolder.setFailure(e);
+        public Page run() throws IOException {
+            Page nextPage = gateway.search(query, page.size());
+            page.stitch(nextPage);
+            return page;
         }
     }
 }

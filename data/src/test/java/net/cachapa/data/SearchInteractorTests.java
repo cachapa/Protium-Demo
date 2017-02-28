@@ -1,9 +1,11 @@
 package net.cachapa.data;
 
+import net.cachapa.data.gateway.ClientManager;
+import net.cachapa.data.gateway.GiphyGateway;
 import net.cachapa.data.interactor.SearchInteractor;
 import net.cachapa.data.mock.BlockingExecutorService;
-import net.cachapa.data.model.GifsObservable;
-import net.cachapa.data.gateway.GiphyGateway;
+import net.cachapa.data.model.Page;
+import net.cachapa.protium.ObservableModel;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,15 +18,15 @@ public class SearchInteractorTests {
     
     @Before
     public void setup() {
-        mInteractor = new SearchInteractor(new BlockingExecutorService(), new GiphyGateway());
+        mInteractor = new SearchInteractor(new BlockingExecutorService(), new GiphyGateway(ClientManager.getClient()), "beer");
     }
     
     @Test
     public void search() throws Exception {
-        GifsObservable gifsObservable = mInteractor.getGifsObservable();
-        mInteractor.setQuery("beer");
+        ObservableModel<Page> observable = mInteractor.getObservable();
+        mInteractor.fetch();
         
-        assertEquals(25, gifsObservable.getList().size());
-        assertTrue(gifsObservable.getTotalCount() > 1000);
+        assertEquals(25, observable.getModel().size());
+        assertTrue(observable.getModel().total() > 1000);
     }
 }

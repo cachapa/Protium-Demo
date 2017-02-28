@@ -7,17 +7,12 @@
 
         <import type="android.view.View" />
 
-        <import type="net.cachapa.data.model.GifsObservable" />
-
-        <import type="net.cachapa.data.model.StateHolder" />
+        <import type="net.cachapa.data.model.Page" />
 
         <variable
-            name="gifs"
-            type="GifsObservable" />
+            name="observable"
+            type="net.cachapa.protium.ObservableModel&lt;Page>" />
 
-        <variable
-            name="stateHolder"
-            type="StateHolder" />
     </data>
 
     <LinearLayout
@@ -31,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            auto:gif_list="@{gifs.list}"
+            auto:gif_list="@{observable.model.entries}"
             tools:listitem="@layout/item_gif" />
 
         <FrameLayout
@@ -50,8 +45,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                auto:count="@{gifs.list.size()}"
-                auto:totalCount="@{gifs.totalCount}" />
+                auto:count="@{observable.model.size}"
+                auto:totalCount="@{observable.model.total}" />
 
             <ProgressBar
                 android:id="@+id/progress"
@@ -59,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:visibility="@{stateHolder.stateObservable == StateHolder.State.WORKING ? View.VISIBLE : View.GONE}" />
+                android:visibility="@{observable.busy ? View.VISIBLE : View.GONE}" />
 
         </FrameLayout>
 
